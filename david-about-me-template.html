@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>David — about me</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+    --bg:        #1b1108;
+    --bg-alt:    #241608;
+    --panel:     #2c1a0c;
+    --panel-2:   #33200f;
+    --rule:      rgba(255, 178, 92, 0.16);
+
+    --accent:    #ff7f3f;   /* tangerine   - primary accent   */
+    --accent-2:  #ffb648;   /* amber       - secondary accent */
+    --accent-3:  #c8481f;   /* burnt orange- deep contrast    */
+
+    --text:        #f6ead8;
+    --text-muted:  #cba789;
+    --text-faint:  #8a6b52;
+
+    --display: "Fraunces", serif;
+    --body: "Work Sans", sans-serif;
+
+    --rail-w: 220px;
+}
+
+* { box-sizing: border-box; }
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 24px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--body);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; }
+
+::selection { background: var(--accent); color: #1b1108; }
+
+:focus-visible {
+    outline: 2px solid var(--accent-2);
+    outline-offset: 3px;
+}
+
+/* ============================================================
+   LAYOUT SHELL — side rail + content column
+   ============================================================ */
+.shell {
+    display: grid;
+    grid-template-columns: var(--rail-w) 1fr;
+    min-height: 100vh;
+}
+
+.rail {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    padding: 40px 28px;
+    border-right: 1px solid var(--rule);
+    background: var(--bg-alt);
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+}
+
+.rail-mark {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.rail-mark-slice {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: conic-gradient(var(--accent) 0deg 250deg, transparent 250deg 360deg);
+    border: 1px solid var(--accent-3);
+    flex: none;
+}
+
+.rail-mark-name {
+    font-family: var(--display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.rail-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.rail-nav a {
+    padding: 9px 10px;
+    margin-inline: -10px;
+    border-radius: 6px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 500;
+    transition: color 150ms ease, background-color 150ms ease;
+}
+
+.rail-nav a:hover,
+.rail-nav a:focus-visible {
+    color: var(--text);
+    background: var(--panel);
+}
+
+.rail-foot {
+    margin-top: auto;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    line-height: 1.5;
+}
+
+main { min-width: 0; }
+
+/* Mobile: rail collapses to a top bar */
+@media (max-width: 860px) {
+    .shell { grid-template-columns: 1fr; }
+
+    .rail {
+        position: sticky;
+        top: 0;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px;
+        border-right: 0;
+        border-bottom: 1px solid var(--rule);
+        z-index: 10;
+        gap: 0;
+    }
+
+    .rail-nav {
+        flex-direction: row;
+        gap: 2px;
+        overflow-x: auto;
+    }
+
+    .rail-nav a { white-space: nowrap; }
+
+    .rail-foot { display: none; }
+}
+
+/* ============================================================
+   SHARED SECTION FRAME
+   ============================================================ */
+section {
+    padding: 96px clamp(24px, 6vw, 96px);
+    border-bottom: 1px solid var(--rule);
+}
+
+section:last-child { border-bottom: 0; }
+
+.eyebrow {
+    color: var(--accent-2);
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin: 0 0 14px;
+}
+
+h2 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    line-height: 1.1;
+    margin: 0 0 28px;
+    max-width: 18ch;
+}
+
+/* citrus-segment divider used between a heading and its content */
+.segment-rule {
+    display: flex;
+    gap: 4px;
+    margin: 0 0 32px;
+}
+
+.segment-rule span {
+    height: 4px;
+    flex: 1;
+    max-width: 34px;
+    border-radius: 2px;
+    background: var(--accent-3);
+}
+
+.segment-rule span:nth-child(odd) { background: var(--accent); }
+.segment-rule span:nth-child(3n)  { background: var(--accent-2); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+    display: grid;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 64px;
+    padding-bottom: 64px;
+    background:
+        radial-gradient(circle at 82% 12%, rgba(255, 127, 63, 0.16), transparent 45%),
+        radial-gradient(circle at 8% 88%, rgba(255, 182, 72, 0.09), transparent 40%);
+}
+
+.hero-inner {
+    max-width: 760px;
+}
+
+.hero-mark {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    margin-bottom: 32px;
+    background: conic-gradient(var(--accent) 0deg 250deg, var(--panel-2) 250deg 360deg);
+    border: 1px solid var(--accent-3);
+    position: relative;
+}
+
+.hero-mark::before {
+    /* orange-slice segment lines */
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    background:
+        repeating-conic-gradient(from 0deg, transparent 0deg 40deg, rgba(27,17,8,0.55) 40deg 41deg);
+}
+
+.hero h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(2.6rem, 6vw, 4.6rem);
+    line-height: 1.04;
+    letter-spacing: -0.01em;
+    margin: 0 0 20px;
+}
+
+/* TODO: replace "David [Last Name]" with your actual name */
+.hero h1 .last {
+    color: var(--accent);
+}
+
+.hero-tagline {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 46ch;
+    margin: 0 0 36px;
+}
+/* TODO: replace the tagline above — one sentence on what you do / care about */
+
+.hero-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.94rem;
+    text-decoration: none;
+    transition: transform 150ms ease, background-color 150ms ease, border-color 150ms ease;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #1b1108;
+    border: 1px solid var(--accent);
+}
+
+.btn-primary:hover { background: var(--accent-2); transform: translateY(-1px); }
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--rule);
+}
+
+.btn-ghost:hover { border-color: var(--accent); transform: translateY(-1px); }
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+.about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 64px;
+    align-items: start;
+}
+
+.about-body p {
+    color: var(--text-muted);
+    max-width: 62ch;
+    margin: 0 0 18px;
+}
+/* TODO: replace the paragraphs in .about-body with a few short paragraphs about yourself:
+   background, what you study or work on, what you're into right now. */
+
+.fact-list {
+    display: grid;
+    gap: 18px;
+    margin: 0;
+    padding: 22px 24px;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: var(--panel);
+}
+
+.fact-list div { display: grid; gap: 3px; }
+
+.fact-label {
+    font-size: 0.76rem;
+    color: var(--text-faint);
+    font-weight: 600;
+}
+
+.fact-value {
+    font-size: 0.98rem;
+    color: var(--text);
+}
+/* TODO: swap the label/value pairs for whatever quick facts you want — school, location,
+   currently learning, etc. Add or remove <div> pairs freely. */
+
+@media (max-width: 700px) {
+    .about-grid { grid-template-columns: 1fr; gap: 36px; }
+}
+
+/* ============================================================
+   SKILLS
+   ============================================================ */
+.skills-groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 28px;
+}
+
+.skill-group h3 {
+    font-family: var(--body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-2);
+    margin: 0 0 14px;
+}
+
+.skill-group ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-group li {
+    padding: 6px 12px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-size: 0.86rem;
+    color: var(--text-muted);
+    background: var(--panel);
+}
+/* TODO: rename the skill-group headings (e.g. "Languages", "Tools", "Currently learning")
+   and replace the <li> items inside each <ul>. Duplicate a .skill-group block for more columns. */
+
+/* ============================================================
+   PROJECTS
+   ============================================================ */
+.project-list {
+    display: grid;
+    gap: 20px;
+}
+
+.project-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 20px;
+    align-items: start;
+    padding: 26px 28px;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--panel);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.project-card:hover,
+.project-card:focus-visible {
+    border-color: var(--accent);
+    background: var(--panel-2);
+}
+
+.project-card h3 {
+    font-family: var(--display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+}
+
+.project-card p {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    max-width: 58ch;
+}
+
+.project-arrow {
+    color: var(--accent);
+    font-size: 1.1rem;
+    align-self: center;
+}
+/* TODO: this whole <a class="project-card"> block repeats — duplicate it for each project,
+   set the href, and replace the title/description. Delete the arrow span if the item has no link. */
+
+@media (max-width: 560px) {
+    .project-card { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   EXPERIENCE — simple vertical timeline
+   ============================================================ */
+.timeline {
+    position: relative;
+    display: grid;
+    gap: 36px;
+    padding-left: 26px;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    left: 5px;
+    width: 2px;
+    background: var(--rule);
+}
+
+.timeline-item { position: relative; }
+
+.timeline-item::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: -26px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+}
+
+.timeline-date {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent-2);
+    margin-bottom: 6px;
+}
+
+.timeline-item h3 {
+    font-family: var(--display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 4px;
+}
+
+.timeline-org {
+    display: block;
+    font-size: 0.86rem;
+    color: var(--text-faint);
+    margin-bottom: 10px;
+}
+
+.timeline-item p {
+    margin: 0;
+    color: var(--text-muted);
+    max-width: 60ch;
+    font-size: 0.94rem;
+}
+/* TODO: this whole <div class="timeline-item"> block repeats — duplicate it for each entry
+   (school, competitions, jobs, volunteering, whatever) and fill in date / title / org / description. */
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.contact-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.94rem;
+    font-weight: 500;
+    color: var(--text);
+    transition: border-color 150ms ease, background-color 150ms ease;
+}
+
+.contact-links a:hover,
+.contact-links a:focus-visible {
+    border-color: var(--accent);
+    background: var(--panel);
+}
+/* TODO: replace the href + label for each contact link (email, GitHub, LinkedIn, etc.).
+   Duplicate an <a> for more. */
+
+footer {
+    padding: 32px clamp(24px, 6vw, 96px);
+    color: var(--text-faint);
+    font-size: 0.8rem;
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+    <!-- ============================================================
+         SIDE NAV — edit labels only if you rename section ids below
+         ============================================================ -->
+    <nav class="rail" aria-label="Section navigation">
+        <div class="rail-mark">
+            <span class="rail-mark-slice" aria-hidden="true"></span>
+            <!-- TODO: replace with your name -->
+            <span class="rail-mark-name">David</span>
+        </div>
+        <div class="rail-nav">
+            <a href="#about">O meni</a>
+            <a href="#skills">Vještine</a>
+            <a href="#projects">Projekti</a>
+            <a href="#experience">Iskustvo</a>
+            <a href="#contact">Kontakt</a>
+        </div>
+        <!-- <p class="rail-foot">Personal site template.<br>Fill in your own content below.</p> -->
+    </nav>
+
+    <main>
+
+        <!-- ============================================================
+             HERO
+             ============================================================ -->
+        <section class="hero" id="top">
+            <div class="hero-inner">
+                <div class="hero-mark" aria-hidden="true"></div>
+
+                <!-- TODO: put your first and last name in here -->
+                <h1>David <span class="last">Kanić</span></h1>
+
+                <!-- TODO: one-sentence tagline — what you do / study / care about -->
+                <p class="hero-tagline">
+                    Ja sam David Kanić, učenik elektrotehnike i računarstva. Trenutno se fokusiram na razvoj softvera, istraživanje zabavnih stvari i mirisu benzina (dok usput radim puno gramatičkih i pravopisnih pogrešaka). 
+                </p>
+
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#about">O meni ↓</a>
+                    <a class="btn btn-ghost" href="#contact">Kontakt</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             ABOUT
+             ============================================================ -->
+        <section id="about">
+            <p class="eyebrow">O meni</p>
+            <h2>Malo tko sam ja</h2>
+            <div class="segment-rule" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+            <div class="about-grid">
+                <div class="about-body">
+                    <!-- TODO: replace with 2–4 short paragraphs about yourself -->
+                    <p>Ja dolazim iz trećeg najvećeg grada u Hrvatskoj, Rijeka</p>
+                    <p>Volim puno kodirati, a uz to znam raditi i vibe-coded niche stvari koje ne mogu objasniti ali ih ja koristim (kadikad dobijem ideje od drugih prijatelja).</p>
+                </div>
+
+                <div class="fact-list">
+                    <!-- TODO: swap these label/value pairs, add or remove as needed -->
+                    <div>
+                        <span class="fact-label">Dolazim</span>
+                        <span class="fact-value">Rijeka, Hrvatska</span>
+                    </div>
+                    <div>
+                        <span class="fact-label">Učim</span>
+                        <span class="fact-value">Elektrotehnika i računarstvo</span>
+                    </div>
+                    <div>
+                        <span class="fact-label">Trenutno učim</span>
+                        <span class="fact-value">C (ndms ali moram)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             SKILLS
+             ============================================================ -->
+        <section id="skills">
+            <p class="eyebrow">Iskustva</p>
+            <h2>S čim radim</h2>
+            <div class="segment-rule" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+            <div class="skills-groups">
+                <!-- TODO: rename each group and replace the tags inside -->
+                <div class="skill-group">
+                    <h3>Programski jezici</h3>
+                    <ul>
+                        <li>Python</li>
+                        <li>C++</li>
+                        <li>malo .html</li>
+                    </ul>
+                </div>
+                <div class="skill-group">
+                    <h3>Alati</h3>
+                    <ul>
+                        <li>CLion</li>
+                        <li>LMstudio</li>
+                        <li>Firefox</li>
+                    </ul>
+                </div>
+                <div class="skill-group">
+                    <h3>Ostalo</h3>
+                    <ul>
+                        <li>Tomos</li>
+                        <li>Život</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             PROJECTS
+             ============================================================ -->
+        <section id="projects">
+            <p class="eyebrow">Projekti</p>
+            <h2>Stvari koje sam napravio</h2>
+            <div class="segment-rule" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+            <div class="project-list">
+                <!-- TODO: duplicate this <a> block per project; delete href if there's no link -->
+                <a class="project-card" href="https://evalogotor.vercel.app" target="_blank" rel="noopener noreferrer">
+                    <div>
+                        <h3>evaLOGOtor</h3>
+                        <p>Ručno-rađeni evaluator za programski jezik LOGO, namijenjen za početnike u programiranju i olakšava ručno pregledavanje zadatka.</p>
+                    </div>
+                    <span class="project-arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a class="project-card" href="#" target="_blank" rel="noopener noreferrer">
+                    <div>
+                        <h3>Ova web-stranica</h3>
+                        <p>Ova web-stranica je napravljena kao portfolio za prikazivanje mene</p>
+                    </div>
+                    <span class="project-arrow" aria-hidden="true">↗</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             EXPERIENCE
+             ============================================================ -->
+        <section id="experience">
+            <p class="eyebrow">Vještine</p>
+            <h2>Di sam potrošio svoje vrijeme</h2>
+            <div class="segment-rule" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+            <div class="timeline">
+                <!-- TODO: duplicate this .timeline-item block for each entry -->
+                <div class="timeline-item">
+                    <span class="timeline-date">2026</span>
+                    <h3>Razvoj Softvera</h3>
+                    <span class="timeline-org">Državno Natjecanje iz Informatike</span>
+                    <p>Prezentirao evaLOGOtor sa Karlo Saršonom, dobili treće mjesto i 👍</p>
+                </div>
+
+                <div class="timeline-item">
+                    <span class="timeline-date">2025-sad</span>
+                    <h3>Popravljanje</h3>
+                    <span class="timeline-org">Moja kuća</span>
+                    <p>Popravljam svoje i kadikad od priajtelja motore jer mi je to jako interesantan hobi</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             CONTACT
+             ============================================================ -->
+        <section id="contact">
+            <p class="eyebrow">Kontakt</p>
+            <h2>Dođi u dodir</h2>
+            <div class="segment-rule" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+            <div class="contact-links">
+                <!-- TODO: replace hrefs and labels -->
+                <a href="mailto:kanicdavid@gmail.com">Email</a>
+                <a href="https://github.com/altmalt05-beep" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+        </section>
+
+        <footer>
+            <!-- TODO: update the name/year -->
+            <span>© 2026 David Kanić</span>
+        </footer>
+
+    </main>
+</div>
+
+</body>
+</html>
